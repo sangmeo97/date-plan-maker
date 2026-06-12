@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lịch Hẹn Đã Lưu 📋💖</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --bg-gradient: linear-gradient(135deg, #ffe5ec 0%, #ffc2d1 50%, #f7a072 100%);
+      --text-color: #2b2d42;
+      --card-bg: rgba(255, 255, 255, 0.85);
+      --primary: #ff5c8a;
+      --secondary: #f7a072;
+      --border-radius: 20px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Quicksand', sans-serif;
+      background: var(--bg-gradient);
+      color: var(--text-color);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 20px;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    h1 {
+      font-size: 2.2rem;
+      color: #d81159;
+      margin-bottom: 10px;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+
+    .subtitle {
+      font-size: 1rem;
+      color: #666;
+    }
+
+    main {
+      width: 100%;
+      max-width: 800px;
+    }
+
+    .dates-container {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 25px;
+    }
+
+    @media (min-width: 768px) {
+      .dates-container {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    .date-card {
+      background: var(--card-bg);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      border-radius: var(--border-radius);
+      padding: 25px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .date-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 40px rgba(216, 17, 89, 0.15);
+    }
+
+    .date-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 6px;
+      height: 100%;
+      background: var(--primary);
+    }
+
+    .date-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+      border-bottom: 1px dashed rgba(216, 17, 89, 0.2);
+      padding-bottom: 10px;
+    }
+
+    .client-name {
+      font-weight: 700;
+      font-size: 1.2rem;
+      color: #d81159;
+    }
+
+    .created-at {
+      font-size: 0.8rem;
+      color: #888;
+    }
+
+    .info-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .info-list li {
+      display: flex;
+      align-items: center;
+      font-size: 0.95rem;
+    }
+
+    .info-list i {
+      width: 25px;
+      color: var(--primary);
+      font-size: 1.1rem;
+    }
+
+    .message-box {
+      margin-top: 15px;
+      padding: 10px 15px;
+      background: rgba(255, 255, 255, 0.5);
+      border-radius: 10px;
+      font-style: italic;
+      font-size: 0.9rem;
+      border-left: 3px solid var(--secondary);
+    }
+
+    .empty-state {
+      background: var(--card-bg);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-radius: var(--border-radius);
+      padding: 50px 30px;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+      grid-column: 1 / -1;
+    }
+
+    .empty-state i {
+      font-size: 4rem;
+      color: #ffb3c6;
+      margin-bottom: 20px;
+      display: block;
+    }
+
+    .empty-state p {
+      font-size: 1.1rem;
+      color: #666;
+    }
+
+    .btn-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 30px;
+      padding: 12px 25px;
+      background: white;
+      color: #d81159;
+      border: 2px solid #d81159;
+      border-radius: 30px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .btn-back:hover {
+      background: #d81159;
+      color: white;
+      box-shadow: 0 5px 15px rgba(216, 17, 89, 0.3);
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Danh Sách Lịch Hẹn 📋💖</h1>
+    <p class="subtitle">Nơi lưu trữ các kế hoạch đi chơi</p>
+  </header>
+
+  <main>
+    <div class="dates-container" id="dates-container">
+      <!-- Loading State -->
+      <div style="text-align: center; grid-column: 1 / -1; font-weight: 600; color: #666; padding: 40px;">
+        <i class="fa-solid fa-spinner fa-spin"></i> Đang tải dữ liệu lịch hẹn...
+      </div>
+    </div>
+
+    <div style="text-align: center;">
+      <a href="index.html" class="btn-back">
+        <i class="fa-solid fa-arrow-left"></i> Quay lại trang chủ
+      </a>
+    </div>
+  </main>
+
+  <script>
+    // Fetch and render date plans
+    async function loadDates() {
+      const container = document.getElementById('dates-container');
+      try {
+        const response = await fetch('/api/dates');
+        const result = await response.json();
+
+        if (result.success && result.data && result.data.length > 0) {
+          container.innerHTML = '';
+          result.data.forEach(item => {
+            // Format time created
+            const createdDate = new Date(item.createdAt);
+            const dateStr = createdDate.toLocaleDateString('vi-VN', {
+              day: '2-digit',
+              month: '2-digit',
+              year: 'numeric'
+            });
+            const timeStr = createdDate.toLocaleTimeString('vi-VN', {
+              hour: '2-digit',
+              minute: '2-digit'
+            });
+
+            // Format date chosen
+            const chosenDate = new Date(item.date);
+            const chosenDateStr = chosenDate.toLocaleDateString('vi-VN', {
+              weekday: 'long',
+              day: '2-digit',
+              month: '2-digit',
+              year: 'numeric'
+            });
+
+            const card = document.createElement('div');
+            card.className = 'date-card';
+            card.innerHTML = `
+              <div class="date-card-header">
+                <span class="client-name">${item.name}</span>
+                <span class="created-at">${timeStr} - ${dateStr}</span>
+              </div>
+              <ul class="info-list">
+                <li><i class="fa-regular fa-calendar-days"></i> <span>Ngày hẹn: <strong>${chosenDateStr}</strong></span></li>
+                <li><i class="fa-regular fa-clock"></i> <span>Đón lúc: <strong>${item.time}</strong></span></li>
+                <li><i class="fa-solid fa-map-location-dot"></i> <span>Điểm hẹn: <strong>${item.location}</strong></span></li>
+                <li><i class="fa-solid fa-bowl-food"></i> <span>Món ăn: <strong>${item.food}</strong></span></li>
+              </ul>
+              ${item.message ? `<div class="message-box">" ${item.message} "</div>` : ''}
+            `;
+            container.appendChild(card);
+          });
+        } else {
+          container.innerHTML = `
+            <div class="empty-state">
+              <i class="fa-solid fa-heart-broken"></i>
+              <p>Chưa có lịch hẹn nào được ghi nhận. Hãy gửi trang web cho bạn ấy nhé! 😊</p>
+            </div>
+          `;
+        }
+      } catch (error) {
+        console.error('Error fetching dates:', error);
+        container.innerHTML = `
+          <div class="empty-state">
+            <i class="fa-solid fa-circle-exclamation" style="color: #ff6b6b;"></i>
+            <p>Có lỗi xảy ra khi tải dữ liệu. Hãy chắc chắn rằng máy chủ đang chạy!</p>
+          </div>
+        `;
+      }
+    }
+
+    // Run on startup
+    window.addEventListener('DOMContentLoaded', loadDates);
+  </script>
+</body>
+</html>

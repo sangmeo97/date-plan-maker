@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lịch Đi Chơi Của Chúng Mình 📅</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <!-- Floating Hearts Background -->
+  <div class="hearts-container" id="hearts-container"></div>
+
+  <!-- Main Container -->
+  <main class="app-container">
+
+    <!-- STAGE 1: LOGIN -->
+    <section class="card active" id="stage-login">
+      <div class="card-icon">
+        <i class="fa-solid fa-lock lock-icon"></i>
+      </div>
+      <h2>Trang Web Hẹn Đi Chơi 🔒</h2>
+      <p class="subtitle">Trang web này chỉ mở khóa cho một người duy nhất. Nhập thông tin để bắt đầu nhé!</p>
+
+      <form id="login-form" onsubmit="return false;">
+        <div class="input-group">
+          <label for="username"><i class="fa-solid fa-user"></i> Tên của bạn</label>
+          <input type="text" id="username" placeholder="Nhập đầy đủ họ tên..." required autocomplete="off">
+        </div>
+
+        <div class="input-group">
+          <label for="password"><i class="fa-solid fa-key"></i> Mật khẩu</label>
+          <input type="password" id="password" placeholder="Nhập mật khẩu mở khóa..." required>
+        </div>
+
+        <div class="hint-box">
+          <button type="button" class="btn-hint" id="hint-btn">
+            <i class="fa-solid fa-lightbulb"></i> Gợi ý mật khẩu
+          </button>
+          <p class="hint-text hidden" id="hint-text">
+            Thử nhập <strong>123456</strong>, hoặc ngày sinh của em xem nhé! 😉
+          </p>
+        </div>
+
+        <div class="error-message hidden" id="login-error"></div>
+
+        <button type="submit" class="btn btn-primary" id="login-submit-btn">
+          Mở khóa ngay <i class="fa-solid fa-arrow-right"></i>
+        </button>
+      </form>
+    </section>
+
+
+    <!-- STAGE 2: THE PROPOSAL -->
+    <section class="card" id="stage-proposal" style="display: none;">
+      <div class="card-icon proposal-gif-container">
+        <span class="animated-emoji">🥺👉👈</span>
+      </div>
+      <h2>Will you go on a date with me? 🌹</h2>
+      <p class="subtitle">Chúng mình làm một buổi đi chơi thật vui cùng nhau nhé?</p>
+
+      <div class="proposal-buttons">
+        <button type="button" class="btn btn-proposal btn-yes" id="yes-btn">
+          Đồng ý chứ! 👍
+        </button>
+        <button type="button" class="btn btn-proposal btn-no" id="no-btn">
+          Không nha 😢
+        </button>
+      </div>
+    </section>
+
+
+    <!-- STAGE 3: YAYYYYYYY INTERMEDIATE CELEBRATION -->
+    <section class="card celebration-card" id="stage-yay" style="display: none;">
+      <div class="card-icon yay-emoji">
+        <span class="animated-emoji">🎉🥳🎉</span>
+      </div>
+      <h1 class="yay-title">YAYYYYYYY!</h1>
+      <p class="subtitle">Anh biết thế nào bạn cũng đồng ý mà! Hãy chuẩn bị cho chuyến phiêu lưu sắp tới nhé. 😎</p>
+
+      <button type="button" class="btn btn-primary" id="yay-next-btn">
+        Tiếp tục lên lịch trình <i class="fa-solid fa-arrow-right"></i>
+      </button>
+    </section>
+
+
+    <!-- STAGE 4: DATE AND TIME -->
+    <section class="card" id="stage-datetime" style="display: none;">
+      <div class="card-icon">
+        <i class="fa-regular fa-calendar-days lock-icon" style="color: var(--secondary-color);"></i>
+      </div>
+      <h2>When should our adventure begin? 📅</h2>
+      <p class="subtitle">Hãy chọn ngày và thời gian thích hợp nhất cho buổi đi chơi của chúng mình:</p>
+
+      <form id="datetime-form" onsubmit="return false;">
+        <div class="form-grid">
+          <div class="input-group">
+            <label for="date-select"><i class="fa-regular fa-calendar"></i> Chọn ngày đi chơi</label>
+            <input type="date" id="date-select" required>
+          </div>
+          <div class="input-group">
+            <label for="time-select"><i class="fa-regular fa-clock"></i> Chọn giờ đón bạn</label>
+            <input type="time" id="time-select" required>
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary" id="datetime-next-btn" style="margin-top: 20px;">
+          Tiếp theo <i class="fa-solid fa-arrow-right"></i>
+        </button>
+      </form>
+    </section>
+
+
+    <!-- STAGE 5: FOOD SELECTION -->
+    <section class="card planner-card" id="stage-food" style="display: none;">
+      <h2>Most important question.. what shall we eat? 🍽️</h2>
+      <p class="subtitle">Hãy chọn món ăn bạn muốn thưởng thức trong buổi hẹn:</p>
+
+      <form id="food-form" onsubmit="return false;">
+        <div class="options-grid grid-6">
+          <label class="option-card">
+            <input type="radio" name="food" value="Jollibee 🍗" checked>
+            <div class="option-content">
+              <i class="fa-solid fa-drumstick-bite"></i>
+              <span>Jollibee 🍗</span>
+            </div>
+          </label>
+          <label class="option-card">
+            <input type="radio" name="food" value="BBQ nướng thơm 🍖">
+            <div class="option-content">
+              <i class="fa-solid fa-fire-burner"></i>
+              <span>BBQ 🍖</span>
+            </div>
+          </label>
+          <label class="option-card">
+            <input type="radio" name="food" value="Pizza nóng hổi 🍕">
+            <div class="option-content">
+              <i class="fa-solid fa-pizza-slice"></i>
+              <span>Pizza 🍕</span>
+            </div>
+          </label>
+          <label class="option-card">
+            <input type="radio" name="food" value="Ramen đậm đà 🍜">
+            <div class="option-content">
+              <i class="fa-solid fa-bowl-food"></i>
+              <span>Ramen 🍜</span>
+            </div>
+          </label>
+          <label class="option-card">
+            <input type="radio" name="food" value="Lẩu nóng ấm áp 🍲">
+            <div class="option-content">
+              <i class="fa-solid fa-soup"></i>
+              <span>Hotpot 🍲</span>
+            </div>
+          </label>
+          <label class="option-card">
+            <input type="radio" name="food" value="Cơm rang ngon lành 🍛">
+            <div class="option-content">
+              <i class="fa-solid fa-plate-wheat"></i>
+              <span>Cơm rang 🍛</span>
+            </div>
+          </label>
+        </div>
+
+        <div class="input-group" style="margin-top: 20px;">
+          <label for="message"><i class="fa-regular fa-comment-dots"></i> Lời nhắn gửi (nếu có)</label>
+          <textarea id="message" rows="3" placeholder="Ví dụ: Đón em đúng giờ nha, em thích đi ăn sớm..."></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary" id="food-next-btn" style="margin-top: 15px;">
+          Tiếp theo <i class="fa-solid fa-arrow-right"></i>
+        </button>
+      </form>
+    </section>
+
+
+    <!-- STAGE 6: SUMMARY & SEND -->
+    <section class="card" id="stage-summary" style="display: none;">
+      <div class="card-icon">
+        <i class="fa-solid fa-clipboard-list lock-icon" style="color: var(--primary-color);"></i>
+      </div>
+      <h2>Tổng Hợp Kế Hoạch 📝</h2>
+      <p class="subtitle">Hãy kiểm tra lại lịch trình đi chơi chúng mình đã lên nhé:</p>
+
+      <div class="summary-details">
+        <div class="summary-item">
+          <div class="summary-label"><i class="fa-regular fa-calendar-days"></i> Ngày đi chơi</div>
+          <div class="summary-val" id="sum-date">--/--/----</div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-label"><i class="fa-regular fa-clock"></i> Giờ đón bạn</div>
+          <div class="summary-val" id="sum-time">--:--</div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-label"><i class="fa-solid fa-bowl-food"></i> Món ăn lựa chọn</div>
+          <div class="summary-val" id="sum-food">Chưa chọn</div>
+        </div>
+      </div>
+
+      <button type="button" class="btn btn-primary btn-confirm-send" id="confirm-send-btn">
+        Confirm & Send <i class="fa-regular fa-envelope"></i>
+      </button>
+    </section>
+
+
+    <!-- STAGE 7: SUCCESS & COUNTDOWN -->
+    <section class="card success-card" id="stage-success" style="display: none;">
+      <div class="letter-envelope" id="envelope">
+        <div class="envelope-top"></div>
+        <div class="envelope-body"></div>
+        <div class="letter">
+          <div class="letter-text">
+            <h3>Kế Hoạch Đi Chơi ✉️</h3>
+            <p class="greeting">Chào bạn,</p>
+            <p>Lịch trình đi chơi của tụi mình đã được gửi đi:</p>
+            <ul class="date-summary">
+              <li><i class="fa-regular fa-calendar"></i> Ngày: <strong id="summary-date">...</strong></li>
+              <li><i class="fa-regular fa-clock"></i> Giờ đón: <strong id="summary-time">...</strong></li>
+              <li><i class="fa-solid fa-bowl-food"></i> Ăn uống: <strong id="summary-food">...</strong></li>
+            </ul>
+            <p class="closing">Cùng chờ đợi buổi đi chơi vui vẻ sắp tới nhé! 🙌</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="success-info hidden" id="success-info">
+        <!-- Cute Puppy and Chick Animation -->
+        <div class="happy-animation">
+          <span class="puppy-emoji">🐶</span>
+          <span class="chick-emoji">🐥</span>
+        </div>
+        <h2 class="its-a-date">it's a date!</h2>
+        <p class="cant-wait">i cant wait to see you</p>
+
+        <!-- Live Countdown -->
+        <div class="countdown-container">
+          <div class="countdown-title">Thời gian đếm ngược đến buổi đi chơi:</div>
+          <div class="countdown-timer">
+            <div class="time-block">
+              <span id="cd-days">00</span>
+              <label>Ngày</label>
+            </div>
+            <div class="time-block">
+              <span id="cd-hours">00</span>
+              <label>Giờ</label>
+            </div>
+            <div class="time-block">
+              <span id="cd-minutes">00</span>
+              <label>Phút</label>
+            </div>
+            <div class="time-block">
+              <span id="cd-seconds">00</span>
+              <label>Giây</label>
+            </div>
+          </div>
+        </div>
+
+        <button type="button" class="btn btn-secondary" onclick="window.location.reload();">
+          Quay lại trang chủ <i class="fa-solid fa-house"></i>
+        </button>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer link to admin -->
+  <footer class="app-footer">
+    <a href="admin.html" class="admin-link"><i class="fa-solid fa-lock"></i> Xem lịch hẹn</a>
+  </footer>
+
+  <!-- Canvas Confetti CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+  <!-- Application JS -->
+  <script src="app.js"></script>
+</body>
+
+</html>
