@@ -260,76 +260,66 @@ document.getElementById('food-form').addEventListener('submit', function (e) {
   goToStage('stage-food', 'stage-summary');
 });
 
-// 8. Confirm & Send to API Server
-document.getElementById('confirm-send-btn').addEventListener('click', async function () {
+// 8. Confirm & Send — save to localStorage (works on Vercel static deploy)
+document.getElementById('confirm-send-btn').addEventListener('click', function() {
   const confirmBtn = document.getElementById('confirm-send-btn');
-
+  
   // Disable button to prevent double submits
   confirmBtn.disabled = true;
   confirmBtn.innerHTML = 'Đang gửi... <i class="fa-solid fa-spinner fa-spin"></i>';
 
+  // Build record
+  const dateParts = selectedDate.split('-');
+  const formattedDate = `${dateParts[2]}/${dateParts[1]}/${dateParts[0]}`;
+
+  const newDateRecord = {
+    id: Date.now().toString(),
+    name: userNameInput || 'Nguyễn Phương Thủy',
+    date: selectedDate,
+    time: selectedTime,
+    location: 'Đi ăn ' + selectedFood,
+    food: selectedFood,
+    message: selectedMessage,
+    createdAt: new Date().toISOString()
+  };
+
+  // Save to localStorage
   try {
-    const response = await fetch('/api/save-date', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        name: userNameInput,
-        date: selectedDate,
-        time: selectedTime,
-        location: 'Đi ăn ' + selectedFood, // Simplify as location is dinner
-        food: selectedFood,
-        message: selectedMessage
-      })
-    });
-
-    const result = await response.json();
-
-    if (result.success) {
-      // Set summary cards in letter
-      const dateParts = selectedDate.split('-');
-      const formattedDate = `${dateParts[2]}/${dateParts[1]}/${dateParts[0]}`;
-
-      document.getElementById('summary-date').innerText = formattedDate;
-      document.getElementById('summary-time').innerText = selectedTime;
-      document.getElementById('summary-food').innerText = selectedFood;
-
-      // Go to final Success Screen
-      goToStage('stage-summary', 'stage-success');
-
-      // Trigger envelope opening animation
-      setTimeout(() => {
-        const successCard = document.getElementById('stage-success');
-        successCard.classList.add('open-envelope');
-
-        // Show detail info and countdown
-        setTimeout(() => {
-          document.getElementById('success-info').classList.remove('hidden');
-        }, 1200);
-
-        // Run countdown clock and confetti burst
-        startCountdown(selectedDate, selectedTime);
-
-        // Final quick pop confetti
-        confetti({
-          particleCount: 100,
-          spread: 70,
-          origin: { y: 0.6 }
-        });
-      }, 500);
-
-    } else {
-      alert(result.error || 'Có lỗi xảy ra, vui lòng thử lại!');
-      confirmBtn.disabled = false;
-      confirmBtn.innerHTML = 'Confirm & Send <i class="fa-regular fa-envelope"></i>';
-    }
-  } catch (error) {
-    console.error('Error saving plan:', error);
-    alert('Không thể kết nối đến máy chủ. Vui lòng đảm bảo server đang chạy ở cổng 3000!');
-    confirmBtn.disabled = false;
-    confirmBtn.innerHTML = 'Confirm & Send <i class="fa-regular fa-envelope"></i>';
+    const existing = JSON.parse(localStorage.getItem('datePlans') || '[]');
+    existing.push(newDateRecord);
+    localStorage.setItem('datePlans', JSON.stringify(existing));
+  } catch (err) {
+    console.warn('localStorage save failed:', err);
   }
+
+  // Set summary cards in letter
+  document.getElementById('summary-date').innerText = formattedDate;
+  document.getElementById('summary-time').innerText = selectedTime;
+  document.getElementById('summary-food').innerText = selectedFood;
+
+  // Go to final Success Screen
+  goToStage('stage-summary', 'stage-success');
+
+  // Trigger envelope opening animation
+  setTimeout(() => {
+    const successCard = document.getElementById('stage-success');
+    successCard.classList.add('open-envelope');
+    
+    // Show detail info and countdown
+    setTimeout(() => {
+      document.getElementById('success-info').classList.remove('hidden');
+    }, 1200);
+
+    // Run countdown clock and confetti burst
+    startCountdown(selectedDate, selectedTime);
+    
+    // Final quick pop confetti
+    confetti({
+      particleCount: 100,
+      spread: 70,
+      origin: { y: 0.6 }
+    });
+  }, 500);
 });
 
 // 9. Countdown Timer
