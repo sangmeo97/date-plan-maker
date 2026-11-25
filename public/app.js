@@ -98,18 +98,18 @@ document.getElementById("login-form").addEventListener("submit", function (e) {
   errorEl.classList.add("hidden");
   loginCard.classList.remove("shake");
 
-  // Username validation: ha phuong (case-insensitive, accent-insensitive)
-  if (normalizedName !== "ha phuong") {
+  // Username validation: khanh huyen (case-insensitive, accent-insensitive)
+  if (normalizedName !== " khanh huyen") {
     loginCard.classList.add("shake");
     errorEl.classList.remove("hidden");
 
     // Check if they input parts of the name
-    if (normalizedName.includes("ha") || normalizedName.includes("phuong")) {
+    if (normalizedName.includes("khanh") || normalizedName.includes("huyen")) {
       errorEl.innerHTML =
         '<i class="fa-solid fa-triangle-exclamation"></i> Gần đúng rồi! Vui lòng nhập đầy đủ cả họ và tên nhé! 😉';
     } else {
       errorEl.innerHTML =
-        '<i class="fa-solid fa-triangle-exclamation"></i> Hừm... Không phải bạn này rồi! Trang web này chỉ dành riêng cho <strong>Hà Phương</strong> thôi! 😤';
+        '<i class="fa-solid fa-triangle-exclamation"></i> Hừm... Không phải bạn này rồi! Trang web này chỉ dành riêng cho <strong>Khánh Huyền</strong> thôi! 😤';
     }
     return;
   }
