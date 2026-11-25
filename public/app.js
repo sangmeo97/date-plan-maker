@@ -99,7 +99,7 @@ document.getElementById("login-form").addEventListener("submit", function (e) {
   loginCard.classList.remove("shake");
 
   // Username validation: khanh huyen (case-insensitive, accent-insensitive)
-  if (normalizedName !== " khanh huyen") {
+  if (normalizedName !== "khanh huyen") {
     loginCard.classList.add("shake");
     errorEl.classList.remove("hidden");
 
@@ -290,7 +290,7 @@ document
 
     const newDateRecord = {
       id: Date.now().toString(),
-      name: userNameInput || "Nguyễn Phương Thủy",
+      name: userNameInput || "Khánh Huyền",
       date: selectedDate,
       time: selectedTime,
       location: "Đi ăn " + selectedFood,
